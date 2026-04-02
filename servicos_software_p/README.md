@@ -14,9 +14,19 @@ Vamos criar uma pasta para cada container:
 
 Os conteúdos serão desenvolvidos durante a aula e ficarão disponibilizados em nosso repositório github.
 
+**Gradio Visão**
 Dentro do primeiro container, iremos criar os seguintes arquivos:
 
 - Dockerfile
 - app.py
+- requirements.txt
+
+Utilizar o código disponível em servicos_software_p/gradio-visao como modelos destes arquivos.
+
+**API VISÃO**
+
+Dentro do container api-visão, iremos criar os seguintes arquivos:
+- Dockerfile
+- main.py
 - requirements.txt
 
