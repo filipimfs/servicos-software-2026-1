@@ -26,7 +26,6 @@ services:
     volumes:
       - /code
 
-## Linha que devem ser adicionadas
   gradio-visao:
     build:
       context: gradio-visao
@@ -50,9 +49,9 @@ services:
       context: api-armazenamento
       dockerfile: Dockerfile
     ports:
-      - "8082:8082"
+    - "8082:8082"
     volumes:
-      - dados-imagens:/dados
+    - dados-imagens:/dados
 
 volumes:
   dados-imagens:
