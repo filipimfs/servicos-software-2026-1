@@ -1,80 +1,95 @@
-**Criando uma estrutura para upload de arquivos**
+# Projeto Final - Serviços de Software
 
-Vamos criar uma estrutura com os seguintes componentes:
+## Descrição
 
-    - Um container para um app gradio-visao que irá apresentar a interface para a seleção de um arquivo de imagem para upload
-    - Um container api-visao que será responsável por receber o nosso arquivo, reconhecer o seu conteúdo e armazená-lo em nosso serviço de armazenamento
-    - Um container api-armazenamento que irá salvar o arquivo em um volume compartilhado e gravar o registro em um banco de dados SQLite.
+Este projeto consiste em uma aplicação baseada em arquitetura de
+microserviços containerizados utilizando Docker. A solução é composta
+por dois serviços principais:
 
-Passo-a-passo
-Vamos criar uma pasta para cada container:
- - gradio-visao
- - api-visao
- - api-armazenamento
+-   **Backend**: responsável pelo processamento das requisições e
+    execução dos modelos de Inteligência Artificial.
+-   **Frontend**: responsável pela interface com o usuário.
 
-Os conteúdos serão desenvolvidos durante a aula e ficarão disponibilizados em nosso repositório github.
+A comunicação entre os serviços é realizada por meio de **APIs REST**.
 
-**Gradio Visão**
-Dentro do primeiro container, iremos criar os seguintes arquivos:
+------------------------------------------------------------------------
 
-- Dockerfile
-- app.py
-- requirements.txt
+## Funcionalidades
 
-Utilizar o código disponível em servicos_software_p/gradio-visao como modelos destes arquivos.
+A aplicação permite:
 
-**API VISÃO**
+-   🎤 **Transcrição automática de áudio** utilizando o modelo de IA
+    Whisper
+-   🧠 **Análise de sentimento** do texto (positivo, negativo, neutro)
+-   🔄 **Processamento integrado** (áudio → texto → sentimento) em um
+    único endpoint
 
-Dentro do container api-visão, iremos criar os seguintes arquivos:
-- Dockerfile
-- main.py
-- requirements.txt
+------------------------------------------------------------------------
 
-Utilizar o código disponível em servicos_software_p/api-visao como modelos destes arquivos.
+## Arquitetura
 
-**API ARMAZENAMENTO**
+Usuário → Frontend (Gradio) → Backend (FastAPI + Whisper)
 
-- Dockerfile
-- main.py
-- requirements.txt
+-   O usuário envia um áudio pela interface web
+-   O frontend envia a requisição para o backend
+-   O backend:
+    1.  Transcreve o áudio
+    2.  Analisa o sentimento do texto
+    3.  Retorna o resultado
 
-**Alteração no arquivo compose.yaml para habilitar os novos containers**
+------------------------------------------------------------------------
 
-Devem ser acrescentadas as seguintes linhas no arquivo: 
+## Tecnologias Utilizadas
 
-```xml
-  gradio-visao:
-    build:
-      context: gradio-visao
-      dockerfile: Dockerfile
-    ports:
-      - "7861:7861"
-    depends_on:
-      - api-visao
+-   Python
+-   FastAPI
+-   Gradio
+-   Whisper (OpenAI)
+-   Docker / Docker Compose
 
-  api-visao:
-    build:
-      context: api-visao
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
-    depends_on:
-      - api-armazenamento
+------------------------------------------------------------------------
 
-api-armazenamento:
-  build:
-    context: api-armazenamento
-    dockerfile: Dockerfile
-  ports:
-    - "8082:8082"
-  volumes:
-    - dados-imagens:/dados
+## Endpoints da API
 
-volumes:
-  dados-imagens:
+### GET /
 
+Verifica se o servidor está ativo
+
+### POST /transcrever
+
+Recebe um arquivo de áudio e retorna o texto transcrito
+
+### POST /analyze
+
+Recebe um texto e retorna a análise de sentimento
+
+### POST /transcrever-e-analisar
+
+Recebe um áudio e retorna: - Texto transcrito - Sentimento - Score
+
+------------------------------------------------------------------------
+
+## Como executar
+
+``` bash
+git clone https://github.com/SEU_USUARIO/servicos-software-2026-1.git
+cd servicos-software-2026-1
+docker compose up --build
 ```
 
-```sh
-docker compose up -d --build
+Acesse: http://localhost:7860
 
+------------------------------------------------------------------------
+
+## Estrutura do Projeto
+
+backend-json/ → API (FastAPI + IA) gradio-json/ → Interface do usuário
+(Gradio) compose.yaml → Orquestração dos containers
+
+------------------------------------------------------------------------
+
+## Conclusão
+
+O projeto demonstra a integração entre serviços independentes utilizando
+containers Docker, comunicação via APIs REST e aplicação de modelos de
+Inteligência Artificial em um fluxo completo de processamento de dados.
